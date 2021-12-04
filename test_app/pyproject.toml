@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "test-app"
+version = "0.1.0"
+description = ""
+authors = ["tys-hiroshi"]
+readme = "README.md"
+packages = [{include = "test_app"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+fastapi = "^0.68.1"
+uvicorn = {extras = ["standard"], version = "^0.15.0"}
+gunicorn = "^20.1.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
