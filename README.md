@@ -2,7 +2,10 @@
 
 https://qiita.com/moochannel/items/c1a46a2a29f06ce86b78
 
-poetry new test_app
+poetry new newbitcoin
 
-poetry add fastapi uvicorn[standard] gunicorn
+cd newbitcoin
 
+
+poetry add jupyter
+poetry shell
