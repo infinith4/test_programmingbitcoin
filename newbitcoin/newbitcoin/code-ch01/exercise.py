@@ -21,7 +21,10 @@ c = FieldElement(10, 13)
 print(a*b==c)
 
 prime = 31
+# 3/24
 print(3*pow(24, prime-2, prime) % prime)
+# 17**(-3)
 print(pow(17, prime-4, prime) % prime)
+# (4**(-4)) * 11 
 print(pow(4, prime-5, prime)*11 % prime)
 
