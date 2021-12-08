@@ -9,3 +9,6 @@ cd newbitcoin
 
 poetry add jupyter
 poetry shell
+
+
+poetry install
