@@ -19,3 +19,9 @@ a = FieldElement(3, 13)
 b = FieldElement(12, 13)
 c = FieldElement(10, 13)
 print(a*b==c)
+
+prime = 31
+print(3*pow(24, prime-2, prime) % prime)
+print(pow(17, prime-4, prime) % prime)
+print(pow(4, prime-5, prime)*11 % prime)
+
