@@ -47,7 +47,9 @@ class FieldElement:
         # self.num and other.num are the actual values
         # self.prime is what we need to mod against
         # We return an element of the same class
-        raise NotImplementedError
+        num = (self.num * other.num) % self.prime  # <2>
+        return self.__class__(num, self.prime)  # <3>
+        #raise NotImplementedError
 
     # tag::source3[]
     def __pow__(self, exponent):
