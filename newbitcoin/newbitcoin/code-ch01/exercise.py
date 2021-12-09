@@ -28,3 +28,8 @@ print(pow(17, prime-4, prime) % prime)
 # (4**(-4)) * 11 
 print(pow(4, prime-5, prime)*11 % prime)
 
+
+
+a = FieldElement(3, 31)
+b = FieldElement(24, 31)
+print(a / b == FieldElement(4, 31))
