@@ -28,29 +28,9 @@ class FieldElement:
             raise TypeError('Cannot add two numbers in different Fields')
         # self.num and other.num are the actual values
         # self.prime is what we need to mod against
-        # num = (self.num + other.num) % self.prime
-        # # We return an element of the same class
-        
-        # return self.__class__(num, self.prime)
-        # tag::answer5[]
-        # x1 != x2
-        if self.x != other.x:
-            s = (other.y - self.y) / (other.x - self.x)
-            x = s**2 - self.x - other.x
-            y = s * (self.x - x) - self.y
-            return self.__class__(x, y, self.a, self.b)
-        # end::answer5[]
-        # tag::answer7[]
-        # P1 = P2
-        if self == other:
-            s = (3 * self.x**2 + self.a) / (2 * self.y)
-            x = s**2 - 2 * self.x
-            y = s * (self.x - x) - self.y
-            return self.__class__(x, y, self.a, self.b)
-        # end::answer7[]
-        # P1 = P2 and y = 0
-        if self == other and self.y == 0 * self.x:
-            return self.__class__(None, None, self.a, self.b)
+        num = (self.num + other.num) % self.prime
+        # We return an element of the same class
+        return self.__class__(num, self.prime)
 
     def __sub__(self, other):
         if self.prime != other.prime:
@@ -186,7 +166,7 @@ class Point:
         # Case 1: self.x == other.x, self.y != other.y
         # Result is point at infinity
 
-        # Case 2: self.x ≠ other.x
+        # Case 2: self.x != other.x
         # Formula (x3,y3)==(x1,y1)+(x2,y2)
         # s=(y2-y1)/(x2-x1)
         # x3=s**2-x1-x2
