@@ -190,6 +190,7 @@ class Point:
             y = s * (self.x - x) - self.y
             return self.__class__(x, y, self.a, self.b)
         # end::answer5[]
+
         if self == other and self.y == 0 * self.x:
             return self.__class__(None, None, self.a, self.b)
         # tag::answer7[]
@@ -200,7 +201,19 @@ class Point:
             return self.__class__(x, y, self.a, self.b)
         # end::answer7[]
 
-
+    # tag::source3[]
+    def __rmul__(self, coefficient):
+        coef = coefficient
+        current = self  # <1>
+        result = self.__class__(None, None, self.a, self.b)  # <2>
+        while coef:
+            if coef & 1:  # <3>
+                result += current
+            current += current  # <4>
+            coef >>= 1  # <5>
+        return result
+    # end::source3[]
+    
 class PointTest(TestCase):
 
     def test_ne(self):

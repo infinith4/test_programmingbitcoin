@@ -20,6 +20,7 @@ import ecc
 from helper import run
 run(ecc.ECCTest('test_on_curve'))
 run(ecc.ECCTest('test_add'))
+run(ecc.PointTest('test_add2'))
 
 x1 = FieldElement(num=192, prime=prime)
 y1 = FieldElement(num=105, prime=prime)
@@ -76,6 +77,10 @@ print(p5+p6)
 # Point(FieldElement_223(47),FieldElement_223(71))_FieldElement_223(0)_FieldElement_223(7)
 
 #ex3-4
+from ecc import FieldElement, Point
+prime = 223
+a = FieldElement(0, prime)
+b = FieldElement(7, prime)
 
 x1 = FieldElement(num=192, prime=prime)
 y1 = FieldElement(num=105, prime=prime)
