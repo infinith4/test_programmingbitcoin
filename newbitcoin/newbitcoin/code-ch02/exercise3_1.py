@@ -179,7 +179,9 @@ y = FieldElement(gy, p)
 seven = FieldElement(7, p)
 zero = FieldElement(0, p)
 
-G = Point(x, y, seven, zero)
-print(n*G)
+G = Point(x, y, zero, seven)
+print(n*G) #Point(infinity)
 
+from ecc import G, N
 
+print(N*G) #Point(infinity)
