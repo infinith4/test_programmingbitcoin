@@ -250,30 +250,15 @@ class ECCTest(TestCase):
         prime = 223
         a = FieldElement(0, prime)
         b = FieldElement(7, prime)
-        valid_points = ((170, 142), (60, 139))
-        expect_points = ((220, 181))
-        points = []
-        for x_raw, y_raw in valid_points:
-            x1 = FieldElement(x_raw, prime)
-            y1 = FieldElement(y_raw, prime)
-            points.append(Point(x1, y1, a, b))
-        self.assertEqual(points[0] + points[1], Point(FieldElement(220, prime), FieldElement(181, prime), a, b))
-        
-        valid_points = ((47, 71), (17, 56))
-        expect_points = ((215, 68))
-        points = []
-        for x_raw, y_raw in valid_points:
-            x1 = FieldElement(x_raw, prime)
-            y1 = FieldElement(y_raw, prime)
-            points.append(Point(x1, y1, a, b))
-        self.assertEqual(points[0] + points[1], Point(FieldElement(215, prime), FieldElement(68, prime), a, b))
-            
-        valid_points = ((143, 98), (76, 66))
-        expect_points = ((47, 71))
-        points = []
-        for x_raw, y_raw in valid_points:
-            x1 = FieldElement(x_raw, prime)
-            y1 = FieldElement(y_raw, prime)
-            points.append(Point(x1, y1, a, b))
-        self.assertEqual(points[0] + points[1], Point(FieldElement(47, prime), FieldElement(71, prime), a, b))
+        valid_points = [[(170, 142), (60, 139)],[(47, 71), (17, 56)], [(143, 98), (76, 66)]]
+        expect_points = [(220, 181),(215, 68),(47, 71)]
 
+        i = 0
+        for valid_point in valid_points:
+            points = []
+            for x_raw, y_raw in valid_point:
+                x1 = FieldElement(x_raw, prime)
+                y1 = FieldElement(y_raw, prime)
+                points.append(Point(x1, y1, a, b))
+            self.assertEqual(points[0] + points[1], Point(FieldElement(expect_points[i][0], prime), FieldElement(expect_points[i][1], prime), a, b))
+            i = i+1
