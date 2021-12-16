@@ -74,3 +74,32 @@ p6 = Point(x6, y6, a, b)
 
 print(p5+p6)
 # Point(FieldElement_223(47),FieldElement_223(71))_FieldElement_223(0)_FieldElement_223(7)
+
+#ex3-4
+
+x1 = FieldElement(num=192, prime=prime)
+y1 = FieldElement(num=105, prime=prime)
+
+p1 = Point(x1, y1, a, b)
+
+print(p1+p1)
+
+x2 = FieldElement(num=143, prime=prime)
+y2 = FieldElement(num=98, prime=prime)
+
+p2 = Point(x2, y2, a, b)
+
+print(p2+p2)
+
+
+x3 = FieldElement(num=47, prime=prime)
+y3 = FieldElement(num=71, prime=prime)
+
+p3 = Point(x3, y3, a, b)
+
+print(p3+p3)
+
+print(p3+p3+p3+p3)
+print(p3+p3+p3+p3+p3+p3+p3+p3)
+print(p3+p3+p3+p3+p3+p3+p3+p3+p3+p3+p3+p3+p3+p3+p3+p3+p3+p3+p3+p3+p3)
+
