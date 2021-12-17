@@ -304,6 +304,13 @@ class S256Point(Point):
     def __rmul__(self, coefficient):
         coef = coefficient % N
         return super().__rmul__(coef)
+    
+    def verify(self, z, sig):
+        s_inv = pow(sig.s, N - 2, N)
+        u = z * s_inv % N
+        v = sig.r * s_inv % N
+        total = u * G + v * self
+        return total.x.num == sig.r
 
 gx = 0x79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798
 gy = 0x483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8
@@ -315,3 +322,10 @@ G = S256Point(gx, gy)
 #     0x79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798,
 #     0x483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8)
 # # end::source10[]
+
+class Signature:
+    def __init__(self, r, s):
+        self.r = r
+        self.s = s
+    def __repr__(self):
+        return 'Signature({:x},{:x})'.format(self.r, self.s)
