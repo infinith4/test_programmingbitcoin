@@ -256,3 +256,35 @@ point = e*G
 
 print(point)
 print(hex(z)) # 0x969f6056aa26f7d2795fd013fe88868d09c9f6aed96965016e1936ae47060d48
+
+# ex4-1
+from ecc import PrivateKey
+
+priv = PrivateKey(5000)
+
+print(priv.point.sec(compressed=False).hex())
+
+priv = PrivateKey(2018**5)
+
+print(priv.point.sec(compressed=False).hex())
+
+priv = PrivateKey(0xdeadbeef12345)
+
+print(priv.point.sec(compressed=False).hex())
+
+# ex4-2
+from ecc import PrivateKey
+
+priv = PrivateKey(5001)
+
+print(priv.point.sec(compressed=True).hex())
+
+priv = PrivateKey(2019**5)
+
+print(priv.point.sec(compressed=True).hex())
+
+priv = PrivateKey(0xdeadbeef54321)
+
+print(priv.point.sec(compressed=True).hex())
+
+
