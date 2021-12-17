@@ -224,3 +224,17 @@ u = z * s_inv % N
 v = r * s_inv % N
 print((u*G + v*point).x.num == r) #True
 
+
+from ecc import S256Point, G, N
+from helper import hash256
+e = int.from_bytes(hash256(b'my secret'), 'big')
+z = int.from_bytes(hash256(b'my message'), 'big')
+k = 1234567890
+r = (k*G).x.num
+k_inv = pow(k, N-2, N)
+s = (z+r*e) * k_inv % N
+point = e*G
+print(point)
+print(hex(z))
+print(hex(r))
+print(hex(s))
