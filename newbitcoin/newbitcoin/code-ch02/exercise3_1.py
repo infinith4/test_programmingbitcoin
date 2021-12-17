@@ -235,6 +235,24 @@ k_inv = pow(k, N-2, N)
 s = (z+r*e) * k_inv % N
 point = e*G
 print(point)
-print(hex(z))
-print(hex(r))
-print(hex(s))
+#Point(028d003eab2e428d11983f3e97c3fa0addf3b42740df0d211795ffb3be2f6c52,0ae987b9ec6ea159c78cb2a937ed89096fb218d9e7594f02b547526d8cd309e2)_0000000000000000000000000000000000000000000000000000000000000000_0000000000000000000000000000000000000000000000000000000000000007
+
+print(hex(z)) #0x231c6f3d980a6b0fb7152f85cee7eb52bf92433d9919b9c5218cb08e79cce78
+print(hex(r)) #0x2b698a0f0a4041b77e63488ad48c23e8e8838dd1fb7520408b121697b782ef22
+print(hex(s)) #0xbb14e602ef9e3f872e25fad328466b34e6734b7a0fcd58b1eb635447ffae8cb9
+
+#ex3-7
+
+from ecc import S256Point, G, N
+from helper import hash256
+
+e = 12345
+z = int.from_bytes(hash256(b'Programming Bitcoin!'), 'big')
+k = 1234567890
+r = (k*G).x.num
+k_inv = pow(k, N-2, N)
+s = (z+r*e) * k_inv % N
+point = e*G
+
+print(point)
+print(hex(z)) # 0x969f6056aa26f7d2795fd013fe88868d09c9f6aed96965016e1936ae47060d48
