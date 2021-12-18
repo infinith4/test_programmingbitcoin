@@ -289,6 +289,9 @@ class S256Field(FieldElement):
     def __repr__(self):
         return '{:x}'.format(self.num).zfill(64)
 
+    def sqrt(self):
+        return self**((P + 1) // 4)
+
 A = 0
 B = 7
 N = 0xfffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141
@@ -324,6 +327,30 @@ class S256Point(Point):
             return b'\x04' + self.x.num.to_bytes(32, 'big') + \
                 self.y.num.to_bytes(32, 'big')
     # end::source1[]
+ 
+    @classmethod
+    def parse(self, sec_bin):
+        '''SEC バイナリ（ 16 進数ではない）から Point オブジェクトを返す '''
+        if sec_bin[0] == 4:
+            x = int.from_bytes(sec_bin[1:33], 'big')
+            y = int.from_bytes(sec_bin[33:65], 'big')
+            return S256Point(x=x, y=y)
+        is_even = sec_bin[0] == 2
+        x = S256Field(int.from_bytes(sec_bin[1:], 'big'))
+        # 式 y^2 = x^3 + 7 の右辺
+        alpha = x**3 + S256Field(B)
+        # 左辺を解く
+        beta = alpha.sqrt()
+        if beta.num % 2 == 0:
+            even_beta = beta
+            odd_beta = S256Field(P - beta.num)
+        else:
+            even_beta = S256Field(P - beta.num)
+            odd_beta = beta
+        if is_even:
+            return S256Point(x, even_beta)
+        else:
+            return S256Point(x, odd_beta)
 
 gx = 0x79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798
 gy = 0x483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8
@@ -340,8 +367,28 @@ class Signature:
     def __init__(self, r, s):
         self.r = r
         self.s = s
+
     def __repr__(self):
         return 'Signature({:x},{:x})'.format(self.r, self.s)
+
+    def der(self):
+        rbin = self.r.to_bytes(32, byteorder='big')
+        # 先頭の null バイトをすべて取り除く
+        rbin = rbin.lstrip(b'\x00')
+        # rbin の最上位ビットが 1 の場合、 \x00 を追加する
+        if rbin[0] & 0x80:
+            rbin = b'\x00' + rbin
+        result = bytes([2, len(rbin)]) + rbin
+        sbin = self.s.to_bytes(32, byteorder='big')
+        # 先頭の null バイトをすべて取り除く
+        sbin = sbin.lstrip(b'\x00')
+        # sbin の最上位ビットが 1 の場合、 \x00 を追加する
+        if sbin[0] & 0x80:
+            sbin = b'\x00' + sbin
+        result += bytes([2, len(sbin)]) + sbin
+        return bytes([0x30, len(result)]) + result
+
+
 
 from random import randint
 
