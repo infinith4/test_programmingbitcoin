@@ -452,3 +452,40 @@ class Tx:
     @classmethod
     def parse(cls, stream):
         serialized_version = stream.read(4)
+
+    @classmethod
+    def parse(cls, s, testnet=False):
+        version = little_endian_to_int(s.read(4))
+        return cls(version, None, None, None, testnet=testnet)
+
+    @classmethod
+    def parse(cls, s, testnet=False):
+        version = little_endian_to_int(s.read(4))
+        num_inputs = read_varint(s)
+        inputs = []
+        for _ in range(num_inputs):
+            inputs.append(TxIn.parse(s))
+        return cls(version, inputs, None, None, testnet=testnet)
+
+
+def little_endian_to_int(b):
+    '''little_endian_to_intはバイト列をリトルエンディアンとみなして受け取り、整数を返す'''
+    return int.from_bytes(b, 'little')
+
+def int_to_little_endian(n, length):
+    '''endian_to_little_endianは整数を受け取り、リトルエンディアンのバイト列を指定の長さで
+    返す'''
+    return n.to_bytes(length, 'little')
+
+
+class TxIn:
+    @classmethod
+    def parse(cls, s):
+        '''Takes a byte stream and parses the tx_input at the start.
+        Returns a TxIn object.
+        '''
+        prev_tx = s.read(32)[::-1]
+        prev_index = little_endian_to_int(s.read(4))
+        script_sig = Script.parse(s)
+        sequence = little_endian_to_int(s.read(4))
+        return cls(prev_tx, prev_index, script_sig, sequence)
