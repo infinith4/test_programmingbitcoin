@@ -410,7 +410,7 @@ class PrivateKey:
             s = N - s
         return Signature(r, s)
 
-from helper import hash256
+from helper import hash256, read_varint
 
 class Tx:
 
