@@ -1,5 +1,5 @@
 from unittest import TestCase
-
+from helper import encode_varint
 
 class FieldElement:
 
@@ -481,6 +481,18 @@ class Tx:
         locktime = little_endian_to_int(s.read(4))
         return cls(version, inputs, outputs, locktime, testnet=testnet)
 
+    def serialize(self):
+        '''トランザクションをシリアライズしてバイトで返す'''
+        result = int_to_little_endian(self.version, 4)
+        result += encode_varint(len(self.tx_ins))
+        for tx_in in self.tx_ins:
+            result += tx_in.serialize()
+        result += encode_varint(len(self.tx_outs))
+        for tx_out in self.tx_outs:
+            result += tx_out.serialize()
+        result += int_to_little_endian(self.locktime, 4)
+        return result
+
 
 def little_endian_to_int(b):
     '''little_endian_to_intはバイト列をリトルエンディアンとみなして受け取り、整数を返す'''
@@ -521,6 +533,14 @@ class TxIn:
         sequence = little_endian_to_int(s.read(4))
         return cls(prev_tx, prev_index, script_sig, sequence)
 
+    def serialize(self):
+        '''トランザクションインプットをシリアライズしてバイトで返す'''
+        result = self.prev_tx[::-1]
+        result += int_to_little_endian(self.prev_tx, 4)
+        result += self.script_sig.serialize()
+        result += int_to_little_endian(self.sequence, 4)
+        return result
+
 class TxOut:
 
     def __init__(self, amount, script_pubkey):
@@ -538,3 +558,9 @@ class TxOut:
         amount = little_endian_to_int(s.read(8))
         script_pubkey = Script.parse(s)
         return cls(amount, script_pubkey)
+
+    def serialize(self):
+        '''トランザクションアウトプットをシリアライズしてバイトで返す'''
+        result = int_to_little_endian(self.amount, 8)
+        result += self.script_pubkey.serialize()
+        return result
