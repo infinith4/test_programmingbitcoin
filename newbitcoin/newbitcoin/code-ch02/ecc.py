@@ -493,6 +493,14 @@ class Tx:
             result += tx_out.serialize()
         result += int_to_little_endian(self.locktime, 4)
         return result
+    #Transaction fee
+    def fee(self, testnet=False):
+        input_sum, output_sum = 0, 0
+        for tx_in in self.tx_ins:
+            input_sum += tx_in.value(testnet=testnet)
+        for tx_out in self.tx_outs:
+            output_sum += tx_out.amount
+        return input_sum - output_sum
 
 
 def little_endian_to_int(b):
@@ -542,6 +550,20 @@ class TxIn:
         result += self.script_sig.serialize()
         result += int_to_little_endian(self.sequence, 4)
         return result
+    
+    def fetch(self, testnet=False):
+        return TxFetcher.fetch(self.prev_tx.hex(), testnet=testnet)
+    
+    def value(self, testnet=False):
+        '''search hash of transaction, get output amount(unit: satshi)'''
+        tx = self.fetch_tx(testnet=testnet)
+        return tx.tx_outs[self.prev_index].amount
+    
+    def script_pubkey(self, testnet=False):
+        '''search hash of transaction, get ScriptPubKey(return Script Object)'''
+        tx = self.fetch_tx(testnet=testnet)
+        return tx.tx_outs[self.prev_index].script_pubkey
+
 
 class TxOut:
 
