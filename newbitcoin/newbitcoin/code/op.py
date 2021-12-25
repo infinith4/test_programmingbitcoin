@@ -1,3 +1,5 @@
+# https://en.bitcoin.it/wiki/Script
+
 import hashlib
 
 from logging import getLogger
@@ -315,7 +317,8 @@ def op_drop(stack):
     stack.pop()
     return True
 
-
+# OP_DUP
+# スタックに1つは必要。そうでないと実行できない
 def op_dup(stack):
     if len(stack) < 1:
         return False
@@ -638,7 +641,8 @@ def op_sha256(stack):
     stack.append(hashlib.sha256(element).digest())
     return True
 
-
+#OP_HASH160
+# ex6-1
 def op_hash160(stack):
     # check that there's at least 1 element on the stack
     if len(stack) < 1:
@@ -650,7 +654,7 @@ def op_hash160(stack):
     stack.append(h160)
     return True
 
-
+# OP_HASH256
 def op_hash256(stack):
     if len(stack) < 1:
         return False
