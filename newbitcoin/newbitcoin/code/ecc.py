@@ -1,4 +1,4 @@
-from _typeshed import BytesPath
+#from _typeshed import BytesPath
 from unittest import TestCase
 from helper import encode_varint
 
